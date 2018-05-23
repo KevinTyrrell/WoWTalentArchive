@@ -77,8 +77,8 @@ const Binding = (function()
     })();
 
     /**
-     * Returns a binding which binds to the sum of the observables.
-     * @param observables Bindings or Properties to watch.
+     * Creates a binding which is bound to the sum of the observables.
+     * @param observables Properties to watch.
      * @returns {{}} Binding instance.
      */
     module.sum = function(...observables)
@@ -95,6 +95,50 @@ const Binding = (function()
                 sum += i.get();
             }
             return sum;
+        }, ...observables);
+    };
+
+    /**
+     * Creates a binding which is bound to the logical AND of the observables.
+     * @param observables Properties to watch.
+     * @returns {{}} Binding instance.
+     */
+    module.and = function(...observables)
+    {
+        assert(observables.length >= 2);
+        return module.new(function()
+        {
+            for (let i of observables)
+            {
+                assert(Boolean(i));
+                assert(Type.of(i) === Type.OBJECT);
+                assert(BooleanProperty.hasInstance(i));
+                if (!i.get())
+                    return false;
+            }
+            return true;
+        }, ...observables);
+    };
+
+    /**
+     * Creates a binding which is bound to the logical OR of the observables.
+     * @param observables Properties to watch.
+     * @returns {{}} Binding instance.
+     */
+    module.or = function(...observables)
+    {
+        assert(observables.length >= 2);
+        return module.new(function()
+        {
+            for (let i of observables)
+            {
+                assert(Boolean(i));
+                assert(Type.of(i) === Type.OBJECT);
+                assert(BooleanProperty.hasInstance(i));
+                if (i.get())
+                    return true;
+            }
+            return false;
         }, ...observables);
     };
 

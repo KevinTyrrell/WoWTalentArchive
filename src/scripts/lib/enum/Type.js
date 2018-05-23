@@ -3,7 +3,7 @@
 /**
  * Type module.
  * Sub-class of Enum.
- * Defines a enum to replace typeof syntax.
+ * Defines an enum to replace typeof syntax.
  */
 const Type = (function()
 {

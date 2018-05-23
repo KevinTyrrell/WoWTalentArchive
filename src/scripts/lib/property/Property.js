@@ -36,8 +36,8 @@ const Property = (function()
 
             /* Property in which this property is bound to. */
             let observing = null;
-            /* Callback function for the binding. */
-            let binding_callback = null;
+            /* Callback function for the observed value. */
+            let observedCallback = null;
 
             /* Sets the value of the Property and notifies all listeners. */
             const set = (function()
@@ -70,9 +70,9 @@ const Property = (function()
             instance.unbind = function()
             {
                 if (!instance.isBound()) return;
-                observing.removeListener(binding_callback);
+                observing.removeListener(observedCallback);
                 observing = null;
-                binding_callback = null;
+                observedCallback = null;
             };
 
             /**
@@ -91,12 +91,12 @@ const Property = (function()
                 instance.unbind();
                 observing = binding;
 
-                binding_callback = function(_, __, newValue)
+                observedCallback = function(_, __, newValue)
                 {
                     set(newValue);
                 };
 
-                observing.addListener(binding_callback);
+                observing.addListener(observedCallback);
                 set(observing.get());
             };
 

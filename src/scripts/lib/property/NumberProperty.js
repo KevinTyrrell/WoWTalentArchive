@@ -37,14 +37,16 @@ const NumberProperty = (function()
             const instance = superConstruct(value);
             associate(instance);
 
+            /* ~~~~~~~~~~ Public member(s) ~~~~~~~~~~ */
+
             /* Override set. */
             (function()
             {
-                const superSet = instance.set;
+                const set = instance.set;
                 instance.set = function(newValue)
                 {
                     assert(checkNum(newValue));
-                    superSet(newValue);
+                    set(newValue);
                 };
             })();
 
@@ -59,7 +61,7 @@ const NumberProperty = (function()
             };
 
             /**
-             * Subtracts a number from the Property.
+             * Performs subtraction on the Property.
              * @param subtrahend Number to be subtracted.
              */
             instance.subtract = function(subtrahend)
@@ -69,8 +71,8 @@ const NumberProperty = (function()
             };
 
             /**
-             * Multiplies a number to the Property.
-             * @param factor Number to be multiplied.
+             * Performs a multiplication on the Property.
+             * @param factor Factor to multiply by.
              */
             instance.multiply = function(factor)
             {
@@ -79,8 +81,8 @@ const NumberProperty = (function()
             };
 
             /**
-             * Divides the Property by a number.
-             * @param divisor
+             * Performs a division on the Property.
+             * @param divisor Divisor of the division.
              */
             instance.divide = function(divisor)
             {
@@ -90,7 +92,7 @@ const NumberProperty = (function()
             };
 
             /**
-             * Increments the Property by one.
+             * Increments the Property.
              */
             instance.increment = function()
             {
@@ -98,17 +100,11 @@ const NumberProperty = (function()
             };
 
             /**
-             * Decrements the Property by one.
+             * Decrements the Property.
              */
             instance.decrement = function()
             {
                 instance.subtract(1);
-            };
-
-            /* Override tostring. */
-            instance.tostring = function()
-            {
-                return "" + value;
             };
 
             return Object.freeze(instance);

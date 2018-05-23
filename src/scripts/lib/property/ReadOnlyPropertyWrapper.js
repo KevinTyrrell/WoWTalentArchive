@@ -32,6 +32,8 @@ const ReadOnlyPropertyWrapper = (function()
             /* Notifies all listeners of the read-only property. */
             let readOnlyNotify = null;
 
+            /* ~~~~~~~~~~ Public member(s) ~~~~~~~~~~ */
+
             /**
              * Provides a read-only view of the Property.
              * Changes made in the Property are reflected in the view.
@@ -53,14 +55,17 @@ const ReadOnlyPropertyWrapper = (function()
             };
 
             /* Override set. */
-            const set = instance.set;
-            instance.set = function(newValue)
+            (function()
             {
-                const oldValue = instance.get();
-                set(newValue);
-                if (readOnly !== null)
-                    readOnlyNotify(oldValue);
-            };
+                const set = instance.set;
+                instance.set = function(newValue)
+                {
+                    const oldValue = instance.get();
+                    set(newValue);
+                    if (readOnly !== null)
+                        readOnlyNotify(oldValue);
+                };
+            })();
 
             return instance;
         }

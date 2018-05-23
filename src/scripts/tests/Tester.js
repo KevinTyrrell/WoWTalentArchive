@@ -2,10 +2,10 @@
 
 println("Starting tests.");
 
-const a = NumberProperty.new(5);
-const b = NumberProperty.new(10);
-const c = NumberProperty.new(-3);
-const d = Binding.sum(a, b, c);
+const a = BooleanProperty.new(true);
+const b = BooleanProperty.new(false);
+const c = BooleanProperty.new(true);
+const d = Binding.or(a, b, c);
 
 d.addListener(function(obs, oldVal, newVal)
 {
@@ -14,10 +14,9 @@ d.addListener(function(obs, oldVal, newVal)
 
 println("Binding is currently: " + d.get());
 
-a.add(5);
-b.decrement();
-b.set(0);
+a.set(false);
+c.not();
+b.not();
 d.unbind();
-a.set(0);
 
 println("Ending tests.");
