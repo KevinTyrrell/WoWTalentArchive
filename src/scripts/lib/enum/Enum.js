@@ -14,7 +14,7 @@ const Enum = (function()
     const superClass = Structure.extend();
 
     /**
-     * @see Structure.extend.
+     * @see Structure.extend
      */
     module.extend = (function()
     {

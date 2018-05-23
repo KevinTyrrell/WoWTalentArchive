@@ -21,6 +21,8 @@ const Structure = (function()
             const instance = { };
             associate(instance);
 
+            /* ~~~~~~~~~~ Public member(s) ~~~~~~~~~~ */
+
             /**
              * Converts a Structure to a String representation.
              * This function should be overridden in subclasses.

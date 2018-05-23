@@ -1,21 +1,23 @@
 "use strict";
 
-function a(y)
+println("Starting tests.");
+
+const a = NumberProperty.new(5);
+const b = NumberProperty.new(10);
+const c = NumberProperty.new(-3);
+const d = Binding.sum(a, b, c);
+
+d.addListener(function(obs, oldVal, newVal)
 {
-    let x = y;
+    println("Binding changed from " + oldVal + " to " + newVal + ".");
+});
 
-    function b()
-    {
-        return x;
-    }
+println("Binding is currently: " + d.get());
 
-    return b;
-}
+a.add(5);
+b.decrement();
+b.set(0);
+d.unbind();
+a.set(0);
 
-let c = a(5);
-let d = a(3);
-c();
-c();
-c();
-d();
-c();
+println("Ending tests.");

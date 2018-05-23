@@ -15,26 +15,50 @@ const ReadOnlyProperty = (function()
     const getProtected = superClass.getProtected;
 
     /* Protected constructor. */
-    const constructor = (function()
+    const construct = (function()
     {
         const associate = InstanceManager.manage(module);
+        const superConstruct = superClass.new;
 
         return function(getCallback)
         {
             assert(Boolean(getCallback));
             assert(Type.of(getCallback) === Type.FUNCTION);
 
-            const instance = superClass.new();
+            const instance = superConstruct();
             associate(instance);
             const restricted = getProtected(instance);
+
+            /* ~~~~~~~~~~ Private member(s) ~~~~~~~~~~ */
+
+            /* Callbacks listening to changes in the Property. */
+            const listeners = new Set();
+
+            /* ~~~~~~~~~~ Protected member(s) ~~~~~~~~~~ */
+
+            /**
+             * Notifies all listeners that the Property changed.
+             * Callback functions will be called with the following parameters:
+             * <property>, <oldValue>, <newValue>
+             *     <property>: Property which has changed.
+             *     <oldValue>: The value that was replaced.
+             *     <newValue>: The replacement value that was set.
+             * @param oldValue Value which was overwritten.
+             */
+            restricted.notify = function(oldValue)
+            {
+                assert(oldValue !== undefined);
+                const newValue = instance.get();
+                for (let listener of listeners)
+                    listener(instance, oldValue, newValue);
+            };
+
+            /* ~~~~~~~~~~ Public member(s) ~~~~~~~~~~ */
 
             /**
              * Returns the value of the Property.
              */
             instance.get = getCallback;
-
-            /* ~~~~~~~~~~ Private member(s) ~~~~~~~~~~ */
-            const listeners = new Set();
 
             /**
              * Adds a listener which monitors changes to the Property.
@@ -60,18 +84,6 @@ const ReadOnlyProperty = (function()
                 return listeners.delete(callback);
             };
 
-            /**
-             * Notifies all listeners of a change within the Property.
-             * @param oldValue Value which was overwritten.
-             */
-            restricted.notifyListeners = function(oldValue)
-            {
-                assert(oldValue !== undefined);
-                const newValue = instance.get();
-                for (let listener of listeners)
-                    listener(oldValue, newValue);
-            };
-
             /* Override tostring. */
             instance.tostring = function()
             {
@@ -90,21 +102,22 @@ const ReadOnlyProperty = (function()
     /**
      * Public constructor.
      * @param getCallback get() implementation.
-     * @see: readOnlyProperty.get.
+     * @see: readOnlyProperty.get
      * @returns {ReadonlyArray<{}>} ReadOnlyProperty instance.
      */
     module.new = function(getCallback)
     {
-        return Object.freeze(constructor(getCallback));
+        return Object.freeze(construct(getCallback));
     };
 
     /**
-     * @see Structure.extend.
+     * @see Structure.extend
+     * @returns {Readonly<{new: *, getProtected: getProtected|*}>} Protected super-constructor & member(s).
      */
     module.extend = function()
     {
         return Object.freeze({
-            new: constructor,
+            new: construct,
             getProtected: getProtected
         });
     };
