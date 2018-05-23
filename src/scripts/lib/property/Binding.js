@@ -91,8 +91,11 @@ const Binding = (function()
             {
                 assert(Boolean(i));
                 assert(Type.of(i) === Type.OBJECT);
-                assert(NumberProperty.hasInstance(i));
-                sum += i.get();
+                assert(ReadOnlyProperty.hasInstance(i));
+                const v = i.get();
+                assert(v !== null);
+                assert(Type.of(v) === Type.NUMBER);
+                sum += v;
             }
             return sum;
         }, ...observables);
@@ -112,9 +115,11 @@ const Binding = (function()
             {
                 assert(Boolean(i));
                 assert(Type.of(i) === Type.OBJECT);
-                assert(BooleanProperty.hasInstance(i));
-                if (!i.get())
-                    return false;
+                assert(ReadOnlyProperty.hasInstance(i));
+                const v = i.get();
+                assert(v !== null);
+                assert(Type.of(v) === Type.BOOLEAN);
+                if (!v) return false;
             }
             return true;
         }, ...observables);
@@ -134,9 +139,11 @@ const Binding = (function()
             {
                 assert(Boolean(i));
                 assert(Type.of(i) === Type.OBJECT);
-                assert(BooleanProperty.hasInstance(i));
-                if (i.get())
-                    return true;
+                assert(ReadOnlyProperty.hasInstance(i));
+                const v = i.get();
+                assert(v !== null);
+                assert(Type.of(v) === Type.BOOLEAN);
+                if (v) return true;
             }
             return false;
         }, ...observables);
