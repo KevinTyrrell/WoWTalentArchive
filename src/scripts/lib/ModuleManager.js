@@ -1,8 +1,8 @@
 "use strict";
 
 /**
- * Instance manager module.
- * Defines a system for associating JSON objects with classes.
+ * Module manager module.
+ * Defines a system for pairing instances with their respective modules.
  */
 const InstanceManager = (function()
 {
