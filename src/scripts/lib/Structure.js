@@ -13,7 +13,9 @@ const Structure = (function()
 
         const hasInstance = function(instance)
         {
-            privateMap.has(instance);
+            assert(Boolean(instance));
+            assert(typeof instance === "object");
+            return privateMap.has(instance);
         };
         module.hasInstance = hasInstance;
 
