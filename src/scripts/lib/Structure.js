@@ -99,8 +99,13 @@ const Structure = (function()
 
     const protectedStatic = extend(module, function()
     {
-        /* Base object instance. */
-        return { };
+        /*
+        Structure is technically a subclass as to avoid repeating boilerplate
+        code. Due to this, the object instance must be contained within a valid
+        protected object. Thus, the super-object of all Structure is an empty
+        protected object which holds an empty base object instance.
+        */
+        return { this: { } };
     });
 
     /**
