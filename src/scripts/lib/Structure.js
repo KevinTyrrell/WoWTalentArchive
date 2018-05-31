@@ -105,8 +105,27 @@ const Structure = (function()
         protected object. Thus, the super-object of all Structure is an empty
         protected object which holds an empty base object instance.
         */
-        return Object.freeze({ this: Object.freeze({ }) });
+        return Object.freeze({ this: { } });
     });
+
+    /* Protected constructor. */
+    const construct = function()
+    {
+        const prot = protectedStatic.new();
+        const instance = prot.this;
+
+        /* ~~~~~~~~~~ Public member(s) ~~~~~~~~~~ */
+
+        /**
+         * @returns {string} String representation of the Structure.
+         */
+        instance.tostring = function()
+        {
+            return "Structure";
+        };
+
+        return Object.freeze(prot);
+    };
 
     /**
      * Public constructor.
@@ -114,7 +133,7 @@ const Structure = (function()
      */
     module.new = function()
     {
-        return Object.freeze(protectedStatic.new().this);
+        return Object.freeze(construct().this);
     };
 
     /**
@@ -126,7 +145,7 @@ const Structure = (function()
     {
         return protectedStatic.extend(module, function()
         {
-            return Object.freeze(protectedStatic.new());
+            return protectedStatic.new();
         });
     };
 
